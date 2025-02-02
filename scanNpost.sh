@@ -5,7 +5,7 @@ POST_URL="https://dlogging-554433.firebaseio.com/data_log.json"  # Firebase expe
 
 # Check if target host is provided
 if [ -z "$1" ]; then
-    echo "Usage: $(basename "$0") <target_host>"
+    echo "Usage: $(basename "${BASH_SOURCE[0]}") <target_host>"
     exit 1
 fi
 
