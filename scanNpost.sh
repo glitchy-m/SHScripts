@@ -20,11 +20,8 @@ IP_ADDRESS=$(dig +short "$TARGET_HOST" | head -n 1)
 [ -z "$IP_ADDRESS" ] && IP_ADDRESS=$(ping -c 1 "$TARGET_HOST" | awk -F'[()]' '/PING/ {print $2}')
 [ -z "$IP_ADDRESS" ] && { echo "Error: Could not determine IP address."; exit 1; }
 
-# Get the local IP address of the machine
-LOCAL_IP=$(hostname -I | awk '{print $1}')
-
 # Create JSON payload (no jq required)
-JSON_DATA="{\"hostname\":\"$HOSTNAME\",\"ip\":\"$IP_ADDRESS\",\"local_ip\":\"$LOCAL_IP\"}"
+JSON_DATA="{\"hostname\":\"$HOSTNAME\",\"ip\":\"$IP_ADDRESS\"}"
 
 # Send data via POST request
 RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d "$JSON_DATA" "$POST_URL")
