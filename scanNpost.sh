@@ -1,30 +1,20 @@
-#!/bin/bash
+# --- Retrieve Local IP Address ---
+# This command attempts to find the first non-loopback IPv4 address.
+# Adjust the parsing if your environment’s ifconfig output differs.
+local_ip=$(ifconfig | awk '/inet / && $2 != "127.0.0.1" { print $2; exit }')
 
-# Configuration
-POST_URL="https://dlogging-554433.firebaseio.com/data_log.json"  # Firebase expects .json
+# --- Retrieve Public (External) IP Address ---
+# Using an external service to get your public IP address.
+public_ip=$(curl -s https://ifconfig.me)
 
-# Check if target host is provided
-if [ -z "$1" ]; then
-    echo "Usage: $(basename "${BASH_SOURCE[0]}") <target_host>"
-    exit 1
-fi
+# --- Create JSON Payload ---
+# We build a JSON string containing both IP addresses.
+json_data=$(printf '{"local_ip": "%s", "public_ip": "%s"}' "$local_ip" "$public_ip")
 
-TARGET_HOST="$1"
+# --- Send the Data via POST ---
+# The -H flag sets the content type to JSON.
+curl -X POST -H "Content-Type: application/json" -d "$json_data" https://dlogging-554433.firebaseio.com/data_log.json
 
-# Get hostname (fallback to target if lookup fails)
-HOSTNAME=$(nslookup "$TARGET_HOST" 2>/dev/null | awk '/name =/ {print $4}' | sed 's/\.$//')
-[ -z "$HOSTNAME" ] && HOSTNAME="$TARGET_HOST"
-
-# Get IP address (works on both macOS & Linux)
-IP_ADDRESS=$(dig +short "$TARGET_HOST" | head -n 1)
-[ -z "$IP_ADDRESS" ] && IP_ADDRESS=$(ping -c 1 "$TARGET_HOST" | awk -F'[()]' '/PING/ {print $2}')
-[ -z "$IP_ADDRESS" ] && { echo "Error: Could not determine IP address."; exit 1; }
-
-# Create JSON payload (no jq required)
-JSON_DATA="{\"hostname\":\"$HOSTNAME\",\"ip\":\"$IP_ADDRESS\"}"
-
-# Send data via POST request
-RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d "$JSON_DATA" "$POST_URL")
-
-# Output response
-echo "Response: $RESPONSE"
+# Optionally, print a message or the response from the server.
+echo "Data sent:"
+echo "$json_data"
